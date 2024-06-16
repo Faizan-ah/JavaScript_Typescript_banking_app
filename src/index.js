@@ -9,7 +9,7 @@ const sunBranch = new Branch("Sun Branch");
 const sunBranch2 = new Branch("Sun Branch 2");
 const westBranch2 = new Branch("West Branch");
 
-const customer1 = new Customer("John", 1);
+const customer1 = new Customer("John Ali", 1);
 const customer2 = new Customer("Anna", 2);
 const customer3 = new Customer("John", 3);
 const customer4 = new Customer("Ali", 1);
@@ -59,14 +59,25 @@ console.log(
   arizonaBank.listCustomers(westBranch, true)
 );
 console.log(
-  `List customers of ${arizonaBank.name}, ${westBranch.name} (without transactions): `,
-  arizonaBank.listCustomers(westBranch, false)
-);
-console.log(
   `List customers of ${arizonaBank.name}, ${sunBranch.name}: `,
   arizonaBank.listCustomers(sunBranch, true)
 );
-
+console.log(
+  `List customers of ${arizonaBank.name}, ${westBranch.name} of name 'John': `,
+  arizonaBank.listCustomers(westBranch, false, "John")
+);
+console.log(
+  `List customers of ${arizonaBank.name}, ${westBranch.name} of ID '1': `,
+  arizonaBank.listCustomers(westBranch, false, "", 1)
+);
+console.log(
+  `List customers of ${arizonaBank.name}, ${westBranch.name} of name 'John' and ID '3': `,
+  arizonaBank.listCustomers(westBranch, false, "John", 3)
+);
+console.log(
+  `List customers of ${arizonaBank.name}, ${westBranch.name} (without transactions): `,
+  arizonaBank.listCustomers(westBranch, false)
+);
 console.log(
   `List customers of ${horizonBank.name}, ${westBranch2.name} (without transactions): `,
   horizonBank.listCustomers(westBranch2, false)

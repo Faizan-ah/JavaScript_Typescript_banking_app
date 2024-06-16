@@ -84,7 +84,7 @@ export default class Bank {
     return this.branches.includes(branch);
   }
 
-  listCustomers(branch, includeTransactions) {
+  listCustomers(branch, includeTransactions, searchByName, searchById) {
     if (!(branch instanceof Branch)) {
       throw new Error(ERR_INVALID_INSTANCE("branch"));
     }
@@ -94,16 +94,52 @@ export default class Bank {
     if (!this.checkBranch(branch)) {
       throw new Error(ERR_NO_RECORD);
     }
+    if (searchByName !== undefined && typeof searchByName !== "string") {
+      throw new Error(ERR_INVALID_NAME);
+    }
+    if (searchById !== undefined && typeof searchById !== "number") {
+      throw new Error(ERR_INVALID_NUMBER);
+    }
     let customers = branch.getCustomers();
     if (includeTransactions) {
+      if (
+        (searchByName !== undefined && searchByName.length !== 0) ||
+        typeof searchById === "number"
+      ) {
+        return this.#filteredCustomers(customers, searchByName, searchById);
+      }
       return stringifyAndIndentArray(customers);
     }
+
     const customersWithoutTransactionDetail = JSON.parse(
       JSON.stringify(customers)
     );
     customersWithoutTransactionDetail.map((customer) => {
       customer.transactions = [];
     });
+    if (
+      (searchByName !== undefined && searchByName.length !== 0) ||
+      typeof searchById === "number"
+    ) {
+      return this.#filteredCustomers(
+        customersWithoutTransactionDetail,
+        searchByName,
+        searchById
+      );
+    }
     return stringifyAndIndentArray(customersWithoutTransactionDetail);
+  }
+
+  #filteredCustomers(customers, searchByName, searchById) {
+    return stringifyAndIndentArray(
+      customers.filter((customer) => {
+        const matchesName = searchByName
+          ? customer.name.toLowerCase().includes(searchByName.toLowerCase())
+          : true;
+        const matchesId =
+          searchById !== undefined ? customer.id === searchById : true;
+        return matchesName && matchesId;
+      })
+    );
   }
 }
