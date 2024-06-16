@@ -5,13 +5,13 @@ import Customer from "./customer.js";
 const arizonaBank = new Bank("Arizona");
 const westBranch = new Branch("West Branch");
 const sunBranch = new Branch("Sun Branch");
+
 const customer1 = new Customer("John", 1);
 const customer2 = new Customer("Anna", 2);
 const customer3 = new Customer("John", 3);
 
 arizonaBank.addBranch(westBranch);
 arizonaBank.addBranch(sunBranch);
-arizonaBank.addBranch(westBranch);
 
 console.log(
   "Find branches of name 'bank': ",
@@ -23,6 +23,7 @@ console.log(
 );
 
 arizonaBank.addCustomer(westBranch, customer1);
+arizonaBank.addCustomer(westBranch, customer3);
 arizonaBank.addCustomer(westBranch, customer3);
 arizonaBank.addCustomer(sunBranch, customer1);
 arizonaBank.addCustomer(sunBranch, customer2);
