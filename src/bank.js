@@ -1,29 +1,57 @@
-import { Bank, Branch, Customer, Transaction } from "./index.js";
+export default class Bank {
+  name;
+  branches = [];
 
-const arizonaBank = new Bank("Arizona");
-const westBranch = new Branch("West Branch");
-const sunBranch = new Branch("Sun Branch");
-const customer1 = new Customer("John", 1);
-const customer2 = new Customer("Anna", 2);
-const customer3 = new Customer("John", 3);
+  constructor(name) {
+    this.name = name;
+  }
 
-arizonaBank.addBranch(westBranch);
-arizonaBank.addBranch(sunBranch);
-arizonaBank.addBranch(westBranch);
+  addBranch(branch) {
+    const currentBranches = this.branches.length;
+    const isBranchPresent = this.branches.some((b) => b.name === branch.name);
+    if (!isBranchPresent) {
+      this.branches.push(branch);
+      if (this.branches.length > currentBranches) {
+        return true;
+      }
+      return false;
+    }
+    return false;
+  }
 
-arizonaBank.findBranchByName("bank");
-arizonaBank.findBranchByName("sun");
+  addCustomer(branch, customer) {
+    branch.addCustomer(customer);
+    return true;
+  }
 
-arizonaBank.addCustomer(westBranch, customer1);
-arizonaBank.addCustomer(westBranch, customer3);
-arizonaBank.addCustomer(sunBranch, customer1);
-arizonaBank.addCustomer(sunBranch, customer2);
+  addCustomerTransaction(branch, customerId, amount) {
+    branch.addCustomerTransaction(customerId, amount);
+    return true;
+  }
 
-arizonaBank.addCustomerTransaction(westBranch, customer1.getId, 3000);
-arizonaBank.addCustomerTransaction(westBranch, customer1.getId, 2000);
-arizonaBank.addCustomerTransaction(westBranch, customer2.getId, 3000);
+  findBranchByName(branchName) {
+    return (
+      this.branches.filter((branch) =>
+        branch.name.toLowerCase().includes(branchName.toLowerCase())
+      ) ?? null
+    );
+  }
 
-customer1.addTransactions(-1000);
-console.log(customer1.getBalance());
-console.log(arizonaBank.listCustomers(westBranch, true));
-console.log(arizonaBank.listCustomers(sunBranch, true));
+  checkBranch(branch) {
+    return this.branches.includes(branch);
+  }
+
+  listCustomers(branch, includeTransactions) {
+    let customers = branch.getCustomers();
+    if (includeTransactions) {
+      return JSON.stringify(customers, null, 2);
+    }
+    const customersWithoutTransactionDetail = JSON.parse(
+      JSON.stringify(customers)
+    );
+    customersWithoutTransactionDetail.map((customer) => {
+      customer.transactions = [];
+    });
+    return customersWithoutTransactionDetail;
+  }
+}
