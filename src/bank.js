@@ -4,8 +4,10 @@ import {
   ERR_INVALID_INSTANCE,
   ERR_INVALID_NAME,
   ERR_INVALID_NUMBER,
+  ERR_NO_RECORD,
   ERR_RECORD_ALREADY_PRESENT,
 } from "./Utility/constants.js";
+import { stringifyAndIndentArray } from "./Utility/utility.js";
 
 export default class Bank {
   name;
@@ -45,8 +47,10 @@ export default class Bank {
     if (!(branch instanceof Branch)) {
       throw new Error(ERR_INVALID_INSTANCE("Branch"));
     }
-    branch.addCustomer(customer);
-    return true;
+    if (!this.checkBranch(branch)) {
+      throw new Error(ERR_NO_RECORD);
+    }
+    return branch.addCustomer(customer);
   }
 
   addCustomerTransaction(branch, customerId, amount) {
@@ -59,9 +63,10 @@ export default class Bank {
     if (typeof customerId !== "number" || isNaN(customerId)) {
       throw new Error(ERR_INVALID_NUMBER("CustomerID"));
     }
-
-    branch.addCustomerTransaction(customerId, amount);
-    return true;
+    if (!this.checkBranch(branch)) {
+      throw new Error(ERR_NO_RECORD);
+    }
+    return branch.addCustomerTransaction(customerId, amount);
   }
 
   findBranchByName(branchName) {
@@ -86,10 +91,12 @@ export default class Bank {
     if (typeof includeTransactions !== "boolean") {
       throw new Error(ERR_INVALID_BOOLEAN);
     }
-
+    if (!this.checkBranch(branch)) {
+      throw new Error(ERR_NO_RECORD);
+    }
     let customers = branch.getCustomers();
     if (includeTransactions) {
-      return JSON.stringify(customers, null, 2);
+      return stringifyAndIndentArray(customers);
     }
     const customersWithoutTransactionDetail = JSON.parse(
       JSON.stringify(customers)
@@ -97,6 +104,6 @@ export default class Bank {
     customersWithoutTransactionDetail.map((customer) => {
       customer.transactions = [];
     });
-    return customersWithoutTransactionDetail;
+    return stringifyAndIndentArray(customersWithoutTransactionDetail);
   }
 }
