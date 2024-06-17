@@ -6,7 +6,7 @@ export default class Customer {
   transactions;
 
   constructor(name, id) {
-    if (typeof name !== "string" || /\d/.test(name)) {
+    if (!name || typeof name !== "string" || /\d/.test(name)) {
       throw new Error(ERR_INVALID_STRING);
     }
 
@@ -42,15 +42,7 @@ export default class Customer {
     if (typeof amount !== "number" || isNaN(amount)) {
       throw new Error(ERR_INVALID_NUMBER("Amount"));
     }
-    const currentTransactions = this.transactions.length;
-    const newTransaction = {
-      amount,
-      date: new Date(),
-    };
-    this.transactions.push(newTransaction);
-    if (this.transactions.length > currentTransactions) {
-      return true;
-    }
-    return false;
+    this.transactions.push({ amount, date: new Date() });
+    return true;
   }
 }

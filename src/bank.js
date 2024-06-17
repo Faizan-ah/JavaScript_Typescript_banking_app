@@ -11,33 +11,24 @@ import { stringifyAndIndentArray } from "./Utility/utility.js";
 
 export default class Bank {
   name;
-  branches = [];
+  branches;
 
   constructor(name) {
-    if (typeof name !== "string") {
+    if (!name || typeof name !== "string") {
       throw new Error(ERR_INVALID_NAME);
     }
     this.name = name;
+    this.branches = [];
   }
 
   addBranch(branch) {
     if (!(branch instanceof Branch)) {
       throw new Error(ERR_INVALID_INSTANCE("Branch"));
     }
-    const currentBranches = this.branches.length;
-    //checks if branch with same id and name is present
-    const isBranchPresent = this.checkBranch(branch);
-    //checks if branch with same  name is present
-    const isBranchNamePresent = this.branches.some(
-      (b) => b.name === branch.name
-    );
-
-    if (!isBranchPresent && !isBranchNamePresent) {
+    const isBranchPresent = this.branches.some((b) => b.name === branch.name);
+    if (!isBranchPresent) {
       this.branches.push(branch);
-      if (this.branches.length > currentBranches) {
-        return true;
-      }
-      return false;
+      return true;
     }
     console.log(ERR_RECORD_ALREADY_PRESENT);
     return false;
@@ -70,7 +61,7 @@ export default class Bank {
   }
 
   findBranchByName(branchName) {
-    if (typeof branchName !== "string") {
+    if (!branchName || typeof branchName !== "string") {
       throw new Error(ERR_INVALID_NAME);
     }
     return (

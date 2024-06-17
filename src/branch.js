@@ -9,10 +9,9 @@ export default class Branch {
   customers;
 
   constructor(name) {
-    if (typeof name !== "string") {
+    if (!name || typeof name !== "string") {
       throw new Error(ERR_INVALID_NAME);
     }
-
     this.name = name;
     this.customers = [];
   }
@@ -29,16 +28,12 @@ export default class Branch {
     if (!(customer instanceof Customer)) {
       throw new Error(ERR_INVALID_INSTANCE("customer"));
     }
-    const currentCustomers = this.customers.length;
     const isCustomerPresent = this.customers.some(
       (user) => user.id === customer.id
     );
     if (!isCustomerPresent) {
       this.customers.push(customer);
-      if (this.customers.length > currentCustomers) {
-        return true;
-      }
-      return false;
+      return true;
     }
     console.log(ERR_RECORD_ALREADY_PRESENT);
     return false;
