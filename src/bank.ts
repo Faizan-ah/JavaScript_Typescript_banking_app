@@ -1,4 +1,5 @@
 import Branch from "./branch.js";
+import Customer from "./customer.js";
 import {
   ERR_INVALID_BOOLEAN,
   ERR_INVALID_INSTANCE,
@@ -10,10 +11,10 @@ import {
 import { stringifyAndIndentArray } from "./Utility/utility.js";
 
 export default class Bank {
-  name;
-  branches;
+  name: string;
+  branches: Array<Branch> = [];
 
-  constructor(name) {
+  constructor(name: string) {
     if (!name || typeof name !== "string") {
       throw new Error(ERR_INVALID_NAME);
     }
@@ -21,7 +22,7 @@ export default class Bank {
     this.branches = [];
   }
 
-  addBranch(branch) {
+  addBranch(branch: Branch): boolean {
     if (!(branch instanceof Branch)) {
       throw new Error(ERR_INVALID_INSTANCE("Branch"));
     }
@@ -34,7 +35,7 @@ export default class Bank {
     return false;
   }
 
-  addCustomer(branch, customer) {
+  addCustomer(branch: Branch, customer: Customer): boolean {
     if (!(branch instanceof Branch)) {
       throw new Error(ERR_INVALID_INSTANCE("Branch"));
     }
@@ -44,7 +45,7 @@ export default class Bank {
     return branch.addCustomer(customer);
   }
 
-  addCustomerTransaction(branch, customerId, amount) {
+  addCustomerTransaction(branch: Branch, customerId: number, amount: number) {
     if (!(branch instanceof Branch)) {
       throw new Error(ERR_INVALID_INSTANCE("Branch"));
     }
@@ -60,7 +61,7 @@ export default class Bank {
     return branch.addCustomerTransaction(customerId, amount);
   }
 
-  findBranchByName(branchName) {
+  findBranchByName(branchName: string): Array<Branch> {
     if (!branchName || typeof branchName !== "string") {
       throw new Error(ERR_INVALID_NAME);
     }
@@ -71,11 +72,16 @@ export default class Bank {
     );
   }
 
-  checkBranch(branch) {
+  checkBranch(branch: Branch) {
     return this.branches.includes(branch);
   }
 
-  listCustomers(branch, includeTransactions, searchByName, searchById) {
+  listCustomers(
+    branch: Branch,
+    includeTransactions: boolean,
+    searchByName?: string,
+    searchById?: number
+  ): string {
     if (!(branch instanceof Branch)) {
       throw new Error(ERR_INVALID_INSTANCE("branch"));
     }
@@ -89,7 +95,7 @@ export default class Bank {
       throw new Error(ERR_INVALID_NAME);
     }
     if (searchById !== undefined && typeof searchById !== "number") {
-      throw new Error(ERR_INVALID_NUMBER);
+      throw new Error(ERR_INVALID_NUMBER("id"));
     }
     let customers = branch.getCustomers();
     if (includeTransactions) {
@@ -105,7 +111,7 @@ export default class Bank {
     const customersWithoutTransactionDetail = JSON.parse(
       JSON.stringify(customers)
     );
-    customersWithoutTransactionDetail.map((customer) => {
+    customersWithoutTransactionDetail.map((customer: Customer) => {
       customer.transactions = [];
     });
     if (
@@ -121,9 +127,13 @@ export default class Bank {
     return stringifyAndIndentArray(customersWithoutTransactionDetail);
   }
 
-  #filteredCustomers(customers, searchByName, searchById) {
+  #filteredCustomers(
+    customers: Array<Customer>,
+    searchByName?: string,
+    searchById?: number
+  ) {
     return stringifyAndIndentArray(
-      customers.filter((customer) => {
+      customers.filter((customer: Customer) => {
         const matchesName = searchByName
           ? customer.name.toLowerCase().includes(searchByName.toLowerCase())
           : true;

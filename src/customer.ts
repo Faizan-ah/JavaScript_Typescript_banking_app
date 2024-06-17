@@ -1,11 +1,12 @@
+import Transaction from "./Transaction.js";
 import { ERR_INVALID_NUMBER, ERR_INVALID_STRING } from "./Utility/constants.js";
 
 export default class Customer {
-  name;
-  id;
-  transactions;
+  name: string;
+  id: number;
+  transactions: Array<Transaction>;
 
-  constructor(name, id) {
+  constructor(name: string, id: number) {
     if (!name || typeof name !== "string" || /\d/.test(name)) {
       throw new Error(ERR_INVALID_STRING);
     }
@@ -19,26 +20,26 @@ export default class Customer {
     this.transactions = [];
   }
 
-  getName() {
+  getName(): string {
     return this.name;
   }
 
-  getId() {
+  getId(): number {
     return this.id;
   }
 
-  getTransactions() {
+  getTransactions(): Array<Transaction> {
     return this.transactions;
   }
 
-  getBalance() {
+  getBalance(): number {
     const balance = this.transactions.reduce((total, transaction) => {
       return total + transaction.amount;
     }, 0);
     return balance < 0 ? 0 : balance;
   }
 
-  addTransactions(amount) {
+  addTransactions(amount: number): boolean {
     if (typeof amount !== "number" || isNaN(amount)) {
       throw new Error(ERR_INVALID_NUMBER("Amount"));
     }

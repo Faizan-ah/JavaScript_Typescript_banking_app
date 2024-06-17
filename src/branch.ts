@@ -1,14 +1,17 @@
 import {
+  ERR_INVALID_INSTANCE,
+  ERR_INVALID_NAME,
+  ERR_INVALID_NUMBER,
   ERR_NO_RECORD,
   ERR_RECORD_ALREADY_PRESENT,
 } from "./Utility/constants.js";
 import Customer from "./customer.js";
 
 export default class Branch {
-  name;
-  customers;
+  name: string;
+  customers: Array<Customer>;
 
-  constructor(name) {
+  constructor(name: string) {
     if (!name || typeof name !== "string") {
       throw new Error(ERR_INVALID_NAME);
     }
@@ -16,15 +19,15 @@ export default class Branch {
     this.customers = [];
   }
 
-  getName() {
+  getName(): string {
     return this.name;
   }
 
-  getCustomers() {
+  getCustomers(): Array<Customer> {
     return this.customers;
   }
 
-  addCustomer(customer) {
+  addCustomer(customer: Customer): boolean {
     if (!(customer instanceof Customer)) {
       throw new Error(ERR_INVALID_INSTANCE("customer"));
     }
@@ -39,7 +42,7 @@ export default class Branch {
     return false;
   }
 
-  addCustomerTransaction(customerId, amount) {
+  addCustomerTransaction(customerId: number, amount: number): boolean {
     if (typeof amount !== "number" || isNaN(amount)) {
       throw new Error(ERR_INVALID_NUMBER("Amount"));
     }

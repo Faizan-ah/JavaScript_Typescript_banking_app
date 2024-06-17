@@ -2,17 +2,17 @@ import Bank from "./bank.js";
 import Branch from "./branch.js";
 import Customer from "./customer.js";
 
-const arizonaBank = new Bank("Arizona");
-const horizonBank = new Bank("Horizon");
-const westBranch = new Branch("West Branch");
-const sunBranch = new Branch("Sun Branch");
-const sunBranch2 = new Branch("Sun Branch 2");
-const westBranch2 = new Branch("West Branch");
+const arizonaBank: Bank = new Bank("Arizona");
+const horizonBank: Bank = new Bank("Horizon");
+const westBranch: Branch = new Branch("West Branch");
+const sunBranch: Branch = new Branch("Sun Branch");
+const sunBranch2: Branch = new Branch("Sun Branch 2");
+const westBranch2: Branch = new Branch("West Branch");
 
-const customer1 = new Customer("John Ali", 1);
-const customer2 = new Customer("Anna", 2);
-const customer3 = new Customer("John", 3);
-const customer4 = new Customer("Ali", 1);
+const customer1: Customer = new Customer("John Ali", 1);
+const customer2: Customer = new Customer("Anna", 2);
+const customer3: Customer = new Customer("John", 3);
+const customer4: Customer = new Customer("Ali", 1);
 
 arizonaBank.addBranch(westBranch);
 arizonaBank.addBranch(sunBranch);
