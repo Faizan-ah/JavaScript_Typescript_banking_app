@@ -1,4 +1,4 @@
-import { capitalizeFirstLetter } from "./utility.js";
+import { capitalizeFirstLetter } from "./utility";
 
 export const ERR_INVALID_NAME: string = "Value must be a string";
 export const ERR_INVALID_STRING: string =

@@ -1,6 +1,6 @@
-import Bank from "./bank.js";
-import Branch from "./branch.js";
-import Customer from "./customer.js";
+import Bank from "./bank";
+import Branch from "./branch";
+import Customer from "./customer";
 
 const arizonaBank: Bank = new Bank("Arizona");
 const horizonBank: Bank = new Bank("Horizon");

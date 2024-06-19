@@ -4,8 +4,8 @@ import {
   ERR_INVALID_NUMBER,
   ERR_NO_RECORD,
   ERR_RECORD_ALREADY_PRESENT,
-} from "./Utility/constants.js";
-import Customer from "./customer.js";
+} from "./Utility/constants";
+import Customer from "./customer";
 
 export default class Branch {
   name: string;

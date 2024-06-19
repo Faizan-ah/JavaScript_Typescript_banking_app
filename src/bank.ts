@@ -1,5 +1,5 @@
-import Branch from "./branch.js";
-import Customer from "./customer.js";
+import Branch from "./branch";
+import Customer from "./customer";
 import {
   ERR_INVALID_BOOLEAN,
   ERR_INVALID_INSTANCE,
@@ -7,8 +7,8 @@ import {
   ERR_INVALID_NUMBER,
   ERR_NO_RECORD,
   ERR_RECORD_ALREADY_PRESENT,
-} from "./Utility/constants.js";
-import { stringifyAndIndentArray } from "./Utility/utility.js";
+} from "./Utility/constants";
+import { stringifyAndIndentArray } from "./Utility/utility";
 
 export default class Bank {
   name: string;

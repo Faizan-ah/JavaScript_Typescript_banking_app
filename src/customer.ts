@@ -1,5 +1,5 @@
-import Transaction from "./Transaction.js";
-import { ERR_INVALID_NUMBER, ERR_INVALID_STRING } from "./Utility/constants.js";
+import Transaction from "./Transaction";
+import { ERR_INVALID_NUMBER, ERR_INVALID_STRING } from "./Utility/constants";
 
 export default class Customer {
   name: string;
